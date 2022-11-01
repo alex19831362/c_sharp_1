@@ -1,10 +1,170 @@
-<Project Sdk="Microsoft.NET.Sdk">
+using System;
+using System.Collections.Generic;
+namespace XOgame
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // first player ==> X
+            // second player ==> O
+            // first player ==> True
+            // second player ==> False
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+            char[] GamePlane = new char[9];
+            for (int i = 0; i < 9; i++)
+            {
+                GamePlane[i] = '-';
+            }
+            bool FirstPlayerWon = false;
+            bool SecondPlayerWon = false;
+            bool CurrentPlayer = true;
 
-</Project>
+            Console.WriteLine("---------------------------Welcome to Game--------------------------");
+            Console.WriteLine();
+            Console.WriteLine(".....the first player can draw X and second player can draw O ..... ");
+            Console.WriteLine("......................THE GAME PLAY THIS LIKE BELOW :...............");
+            Console.WriteLine("\t0\t1\t2");
+            Console.WriteLine("\t3\t4\t5");
+            Console.WriteLine("\t6\t7\t8");
+            Console.WriteLine();
+            Console.WriteLine("--------------------------------------------------------------------");
+
+            while (!FirstPlayerWon && !SecondPlayerWon && GamePlaneHasEmptySpace(GamePlane)) // ! not operator
+            {
+                if (CurrentPlayer == true)
+                {
+                    Console.WriteLine("first player enter a position from 0 to 8 : ");
+                    int position = Convert.ToInt32(Console.ReadLine());
+                    GamePlane[position] = 'X'; // for "char" use the single cotation
+                }
+                else
+                {
+                    Console.WriteLine("second player enter a position from 0 to 8 : ");
+                    int position = Convert.ToInt32(Console.ReadLine());
+                    GamePlane[position] = 'O';
+                }
+
+                CurrentPlayer = !CurrentPlayer; // play the next player..
+                PrintGamePlane(GamePlane);  // the function
+
+                FirstPlayerWon = IsPlayerWonTheGame(GamePlane, 'X'); // the function
+                SecondPlayerWon = IsPlayerWonTheGame(GamePlane, 'O');// the function
+            }
+            if (FirstPlayerWon)
+            {
+                Console.WriteLine("Firstplayer WON !!!");
+            }
+            else if (SecondPlayerWon) // or if
+            {
+                Console.WriteLine("SecondPlayer WON !!!");
+            }
+            else
+            {
+                Console.WriteLine("the game is draw !!!");
+            }
+        }
+
+        private static bool IsPlayerWonTheGame(char[] GamePlane, char PlayerChar) // the function
+        {
+            // winner condition in horizontal
+            if (GamePlane[0] == PlayerChar && GamePlane[1] == PlayerChar && GamePlane[2] == PlayerChar)
+            {
+                return true;
+            }
+            if (GamePlane[3] == PlayerChar && GamePlane[4] == PlayerChar && GamePlane[5] == PlayerChar)
+            {
+                return true;
+            }
+            if (GamePlane[6] == PlayerChar && GamePlane[7] == PlayerChar && GamePlane[8] == PlayerChar)
+            {
+                return true;
+            }
+            // winner condition in vertical
+            if (GamePlane[0] == PlayerChar && GamePlane[3] == PlayerChar && GamePlane[6] == PlayerChar)
+            {
+                return true;
+            }
+            if (GamePlane[1] == PlayerChar && GamePlane[4] == PlayerChar && GamePlane[7] == PlayerChar)
+            {
+                return true;
+            }
+            if (GamePlane[2] == PlayerChar && GamePlane[5] == PlayerChar && GamePlane[8] == PlayerChar)
+            {
+                return true;
+            }
+            // winner condition in diagonal
+            if (GamePlane[0] == PlayerChar && GamePlane[4] == PlayerChar && GamePlane[8] == PlayerChar)
+            {
+                return true;
+            }
+            if (GamePlane[2] == PlayerChar && GamePlane[4] == PlayerChar && GamePlane[6] == PlayerChar)
+            {
+                return true;
+            }
+            return false;
+        }
+        private static void PrintGamePlane(char[] mmm) // (char[]) : type of arg.function 
+        {                                               // (mmm)    : name of arg.function 
+            Console.WriteLine();
+            //Console.WriteLine("\t{0}\t{1}\t{2}" , mmm[0] , mmm[1] , mmm[2]);
+            //Console.WriteLine("\t{0}\t{1}\t{2}" , mmm[3] , mmm[4] , mmm[5]);
+            //Console.WriteLine("\t{0}\t{1}\t{2}" , mmm[6] , mmm[7] , mmm[8]);
+            for (int i = 0; i < 3; i++)
+            {
+                if (mmm[i] == 'X')
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else if (mmm[i] == 'O')
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                Console.Write("\t{0}", mmm[i]);
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            Console.WriteLine();
+            for (int i = 3; i < 6; i++)
+            {
+                if (mmm[i] == 'X')
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else if (mmm[i] == 'O')
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                Console.Write("\t{0}", mmm[i]);
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            Console.WriteLine();
+            for (int i = 6; i < 9; i++)
+            {
+                if (mmm[i] == 'X')
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else if (mmm[i] == 'O')
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                Console.Write("\t{0}", mmm[i]);
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        private static bool GamePlaneHasEmptySpace(char[] Array) // char[] : type of arg.function 
+        {                                                        // Array  : name of arg.function  
+            for (int i = 0; i < 9; i++)
+            {
+                if (Array[i] == '-')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+}
